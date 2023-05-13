@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Battle Game</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+// Create the players
+var player1 = {
+  x: 200,
+  y: 200,
+  width: 50,
+  height: 50,
+  color: "red"
+};
+
+var player2 = {
+  x: 300,
+  y: 200,
+  width: 50,
+  height: 50,
+  color: "blue"
+};
+
+// Create the ball
+var ball = {
+  x: 250,
+  y: 250,
+  width: 25,
+  height: 25,
+  color: "white"
+};
+
+// Draw the players and the ball
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = player1.color;
+  ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
+
+  ctx.fillStyle = player2.color;
+  ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
+
+  ctx.fillStyle = ball.color;
+  ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
+}
+
+// Update the position of the ball
+function update() {
+  // Move the ball up and down
+  ball.y += 5;
+
+  // If the ball hits the top of the canvas, bounce it back down
+  if (ball.y > canvas.height - ball.height) {
+    ball.y = canvas.height - ball.height;
+  }
+
+  // If the ball hits the bottom of the canvas, end the game
+  if (ball.y < 0) {
+    endGame();
+  }
+
+  // Check if the ball hits either player
+  if (ball.x > player1.x - ball.width && ball.x < player1.x + player1.width && ball.y > player1.y - ball.height && ball.y < player1.y + player1.height) {
+    endGame("Player 2 wins!");
+  } else if (ball.x > player2.x - ball.width && ball.x < player2.x + player2.width && ball.y > player2.y - ball.height && ball.y < player2.y + player2.height) {
+    endGame("Player 1 wins!");
+  }
+}
+
+// End the game
+function endGame(winner) {
+  alert(winner);
+  clearInterval(interval);
+}
+
+// Start the game
+var interval = setInterval(update, 20);
+
+// Draw the game
+draw();
+</script>
+</body>
+</html>
